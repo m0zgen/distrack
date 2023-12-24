@@ -25,6 +25,9 @@ for port in "$@"; do
         echo "Port $port is not a number!"
         exit 1
     fi
+
+    echo "Adding NOTRACK rules for port $port ..."
+
     # IPv4 rules
     firewall-cmd --direct --add-rule ipv4 raw PREROUTING 0 -p udp --dport $port -j NOTRACK
     firewall-cmd --direct --add-rule ipv4 raw PREROUTING 0 -p udp --sport $port -j NOTRACK
@@ -46,6 +49,8 @@ for port in "$@"; do
     firewall-cmd --direct --add-rule ipv6 raw PREROUTING 0 -p tcp --sport $port -j NOTRACK
     firewall-cmd --direct --add-rule ipv6 raw OUTPUT 0 -p tcp --dport $port -j NOTRACK
     firewall-cmd --direct --add-rule ipv6 raw OUTPUT 0 -p tcp --sport $port -j NOTRACK
+
+    echo "Done."
 
 done
 
