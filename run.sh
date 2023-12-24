@@ -19,6 +19,12 @@ if [ $# -eq 0 ]; then
 fi
 
 for port in "$@"; do
+
+    # Check if port is number
+    if ! [[ "$port" =~ ^[0-9]+$ ]]; then
+        echo "Port $port is not a number!"
+        exit 1
+    fi
     # IPv4 rules
     firewall-cmd --direct --add-rule ipv4 raw PREROUTING 0 -p udp --dport $port -j NOTRACK
     firewall-cmd --direct --add-rule ipv4 raw PREROUTING 0 -p udp --sport $port -j NOTRACK
